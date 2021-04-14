@@ -1,0 +1,36 @@
+{
+  "name": "personal-website2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon Server/index.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avollman325/Personal-Website2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avollman325/Personal-Website2/issues"
+  },
+  "homepage": "https://github.com/avollman325/Personal-Website2#readme",
+  "dependencies": {
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.2.2",
+    "express": "^4.17.1",
+    "loader": "^2.1.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "webpack": "^5.32.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.6.0"
+  }
+}
