@@ -7,7 +7,7 @@ const App = () => {
 
   return (
     <div className='page-wrap'>
-      <h1>HELLO WORLD</h1>
+      <h1>AUSTIN'S WORLD</h1>
     </div>
   );
 };
