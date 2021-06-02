@@ -6,7 +6,7 @@ const express = require('express');
 const port = process.env.port || 8080;
 const dist = path.resolve(__dirname, '..', 'client', 'dist');
 const app = express();
-
+const sequelize = require('./db/database.js');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/', express.static(dist));

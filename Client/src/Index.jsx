@@ -4,9 +4,9 @@ import App from './components/App.jsx';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 const element = (
-  <Router>
+
     <App />
-  </Router>
+
 );
 
 
