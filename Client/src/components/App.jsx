@@ -1,9 +1,19 @@
 import React from 'react';
-import cats from '../sampleData'
+import cats from '../sampleData';
+import {Button, Modal, Col, Row, Form, Container, Image, Navbar} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+//import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 const App = () => {
+  const [open, setOpen] = useState(false);
   const [textVal, setTextVal] = useState('');
+  const [modalShow, setModalShow] = useState(false);
+  const [catList, setCatList] = useState([]);
   const [frontCat, setFrontCat] = useState(cats[0]);
   const handleChange = (e) => {
     setTextVal(e.target.value);
@@ -25,53 +35,98 @@ const App = () => {
       submit();
     }
   };
-  useEffect(() => {
+  const getAllCats = () => {
+    axios.get('/cats')
+      .then(( cats )=> {
+        console.log('data', cats.data)
+        setFrontCat(cats.data[0]);
 
-    console.log('FRONT CAT', frontCat);
+
+
+        setCatList(cats.data)}).then(() => {console.log('THIS IS cat DATA', catList);})
+      .catch((err) => { console.warn(err); });
+  };
+  // deleteCat(() => {
+  //   axios.post('/removeCat', frontCat)
+  //   .then((data) => data)
+  //   .catch((err) => console.warn(err));
+  // })
+
+  useEffect(() => {
+    getAllCats()
+
+
+
+   console.log('FRONT CAT', catList);
   }, []);
   return (
-    <div className='page-wrap'>
-      <nav className="navbar navbar-default">
-    <div className="container text-center">
-        <div className="navbar-header">
-            <a className="navbar-brand" >Title</a>
-        </div>
-    </div>
-</nav>
+    <Container >
+   <Navbar bg="primary" variant="dark" expand="md">
+     <Navbar.Brand >Cats</Navbar.Brand>
+
+   </Navbar>
 
       <form>
-        <input className='center' value={textVal} onChange={handleChange} onKeyDown={handleKeyPress} type='text' placeholder='enter name'></input>
-        <button className='btn-danger'  onClick={submit} type='button'>Search</button>
+        <input  value={textVal} onChange={handleChange} onKeyDown={handleKeyPress} type='text' placeholder='enter name'></input>
+        <button   onClick={submit} type='button'>Search</button>
       </form>
-      <div>
-      {!cats ? null : <div className='col-md-4'>
+      <Row>
+      {!catList.length ? null : <Col md={4}>
         {
-          cats.map((element, index) => <div className='catsList' key={index}>
-<span><img className='img-thumbnail' src={element.thumbnailUrl}></img> {element.name}</span>
+          catList.map((element, index) => <div className='catsList' key={index}>
+<span> <Image src={element.thumbnailUrl} thumbnail onClick={() => {setFrontCat(element)}} /> {element.name}</span>
 <div>{element.birthdate}</div>
+
 
 
 
 
           </div>)}
 
-      </div> }
-      <div className='col-md-4'>
+      </Col> }
+      <Col md={8}>
+
+        <div>
       <ul>
-        <li><img src={frontCat.thumbnailUrl}></img></li>
+        <li><Image src={frontCat.thumbnailUrl} thumbnail /></li>
         <li>{frontCat.name}</li>
         <li>{frontCat.birthdate}</li>
         <li>Owner: {frontCat.ownerName}</li>
         <li>Number of views: {frontCat.viewCount} times</li>
       </ul>
-      <div>
-      <span> <button>Edit</button> <button>Delete</button></span>
-      </div>
 
+      <Button variant="primary" onClick={() => setOpen(true)}>
+        Launch demo modal
+      </Button>
+      <Button onClick={() => {
+        axios.post('/removeCat', frontCat)
+        .then((data) => data)
+        .catch((err) => console.warn(err));
+      }} >
+        Delete
+      </Button>
 
       </div>
-      </div>
-    </div>
+      <Modal show={open} onHide={() => setOpen(false)}  >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <h4>Text in a modal</h4>
+            <p>
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </p>
+
+            <h4>Popover in a modal</h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
+      </Col>
+      </Row>
+    </Container>
   );
 };
 
