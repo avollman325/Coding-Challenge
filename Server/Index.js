@@ -20,6 +20,13 @@ app.get('/cats', (req, res) => {
       res.send(data)})
     .catch((err) => console.warn(err));
 });
+app.post('/catSearch', (req, res) => {
+  console.log(req.body);
+ const name = req.body.name;
+  Catdetails.findOne({ where: {  name : name } })
+    .then((data) => res.json(data))
+    .catch((err) => console.warn(err));
+});
 app.post('/removeCat', (req, res) => {
 
   console.log(req.body)
@@ -31,6 +38,24 @@ app.post('/removeCat', (req, res) => {
     id: id
 
   }});
+
+
+});
+app.post('/viewCounter', (req, res) => {
+
+  //console.log(req.body)
+  const {id}= req.body
+  const views = req.body.viewCount + 1;
+  // console.log('this is view count', req.body.viewCount);
+  // console.log('this is views', views);
+
+
+  Catdetails.update(
+    {viewCount: views},
+    {where: {id: id}})
+    .then((data) => {
+      res.redirect('/')})
+    .catch((err) => console.warn(err));
 
 
 });
