@@ -5,15 +5,14 @@ import {Button, Modal, Col, Row, Form, Container, Image, Navbar, FormGroup, Form
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import 'bootstrap/dist/css/bootstrap-theme.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import DatePicker from 'react-date-picker';
 import '../components/style.css'
 
 
 const App = () => {
   const [open, setOpen] = useState(false);
   const [textVal, setTextVal] = useState('');
-  //const [modalShow, setModalShow] = useState(false);
+  const [value, onChange] = useState(new Date());
   const [catList, setCatList] = useState([]);
   const [frontCat, setFrontCat] = useState(cats[0]);
   const handleChange = (e) => {
@@ -92,7 +91,7 @@ const App = () => {
       </ul>
 
       <Button variant="primary" onClick={() => setOpen(true)}>
-        Launch demo modal
+        Edit
       </Button>
       <Button onClick={() => {
         axios.post('/removeCat', frontCat)
@@ -106,20 +105,45 @@ const App = () => {
 
       </Col>
       </Row>
-  <Modal  show={open} onHide={() => setOpen(false)}  aria-labelledby="modal-label" >
+  <Modal  show={open} style={{opacity : 1}} onHide={() => setOpen(false)}  aria-labelledby="modal-label" >
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <h4  aria-labelledby="modal-label"> Text in a modal</h4>
-            <p>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </p>
+          <h4  aria-labelledby="modal-label"> Edit Cat</h4>
 
-            <h4>Popover in a modal</h4>
+            <form action='/editCat' method='post'>
+            <input id="id" name="id" type="hidden" value={frontCat.id}/>
+            <label>
+             Thumbnail URL
+              <input type="text" name="thumbnail" />
+            </label>
+            <label>
+              Name:
+              <input type="text" name="name" />
+            </label>
+            <label>
+              Birthdate
+              <DatePicker
+        onChange={onChange}
+        value={value}
+      />
+         <label>
+              Owner:
+              <select id="owner" name="owner">
+              <option value="john doe">John Doe</option>
+              <option value="jane joe">Jane Doe</option>
+              <option value="kate debarros">Kate Debarros</option>
+
+            </select>
+            </label>
+            </label>
+            <input type="submit" value="Submit" />
+            </form>
+
           </Modal.Body>
           <Modal.Footer>
-            <Button>Close</Button>
+
 
           </Modal.Footer>
         </Modal>

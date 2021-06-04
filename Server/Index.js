@@ -41,6 +41,22 @@ app.post('/removeCat', (req, res) => {
 
 
 });
+app.post('/editCat', (req, res) => {
+  const {id}= req.body
+  console.log(req.body)
+  Catdetails.update(
+    {name: req.body.name,
+    birthdate: req.body.date,
+    thumbnailUrl: req.body.thumbnail,
+    ownerName: req.body.owner},
+    {where: {id: id}})
+    .then((data) => {
+      res.redirect('/')})
+    .catch((err) => console.warn(err));
+
+
+
+});
 app.post('/viewCounter', (req, res) => {
 
   //console.log(req.body)
